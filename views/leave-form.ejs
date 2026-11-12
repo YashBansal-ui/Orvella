@@ -1,0 +1,21 @@
+<%- include('partials/head', { page }) %>
+<div class="app-shell">
+  <%- include('partials/sidebar', { page: { ...page, nav: [['My dashboard','/employee','grid'],['My profile','#','user'],['Attendance','#','clock'],['Apply for leave','/employee/leave/apply','calendar-plus'],['Leave history','#','history'],['Documents','#','file']], active: 'Apply for leave' }, role, iconSvg }) %>
+  <main class="main-column"><%- include('partials/topbar', { role }) %>
+    <section class="page-content">
+      <div class="page-heading"><div><div class="eyebrow"><span class="eyebrow-dot"></span> EMPLOYEE WORKSPACE</div><h1>Request time off</h1><p>Submit a leave request for your manager to review.</p></div><a class="button button-outline" href="/employee">← Back to dashboard</a></div>
+      <div class="balance-grid"><% leaveBalances.forEach(balance => { %><article class="balance-card"><div class="balance-label"><span><%= balance.type %></span><span class="balance-symbol"><%= balance.color === 'purple' ? '◈' : balance.color === 'blue' ? '◉' : '✳' %></span></div><div class="balance-number"><strong><%= String(balance.remaining).padStart(2,'0') %></strong><span>days available</span></div><div class="balance-track"><span class="fill-<%= balance.color %>" style="width:<%= balance.remaining / balance.total * 100 %>%"></span></div><small><%= balance.remaining %> of <%= balance.total %> days remaining</small></article><% }) %></div>
+      <div class="leave-form-layout"><section class="panel leave-form-panel"><div class="panel-heading"><div><h2>Leave application</h2><p>Tell us when you need time off and include a short reason.</p></div><span class="step-indicator">01 <i>/</i> 01</span></div>
+        <form action="/employee/leave/apply" method="POST" class="leave-form">
+          <div class="form-row"><label>Leave type<select name="leaveType" required><option value="">Select leave type</option><option>Annual leave</option><option>Sick leave</option><option>Personal leave</option><option>Unpaid leave</option></select></label><label>Number of days<input type="number" min="1" max="30" name="days" placeholder="e.g. 3" required></label></div>
+          <div class="form-row"><label>Start date<input type="date" name="startDate" required></label><label>End date<input type="date" name="endDate" required></label></div>
+          <label>Reason for leave<textarea name="reason" rows="4" placeholder="Add a brief note for your manager…" required></textarea></label>
+          <div class="form-hint"><span>ⓘ</span> Your request will be sent to your reporting manager for approval.</div>
+          <div class="form-actions"><a href="/employee" class="button button-quiet">Cancel</a><button type="submit" class="button button-primary">Submit request <span>→</span></button></div>
+        </form>
+      </section>
+      <aside class="guidance-card"><div class="guidance-icon">✦</div><h2>Before you submit</h2><p>A few things to keep in mind when requesting time off.</p><div class="guidance-list"><article><span>01</span><div><strong>Check your balance</strong><small>Make sure you have enough days available for the dates selected.</small></div></article><article><span>02</span><div><strong>Give your manager context</strong><small>A short note helps your manager review the request.</small></div></article><article><span>03</span><div><strong>Wait for confirmation</strong><small>Your leave is not approved until the request status changes.</small></div></article></div><div class="guidance-footer">Typical response time <strong>1–2 working days</strong></div></aside></div>
+    </section>
+  </main>
+</div>
+<%- include('partials/scripts', { notice }) %>

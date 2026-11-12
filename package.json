@@ -1,0 +1,12 @@
+{
+  "name": "orvella-employee-management-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Responsive Employee Management System frontend built with Express and EJS",
+  "main": "server.js",
+  "scripts": { "start": "node server.js", "dev": "node server.js" },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  }
+}

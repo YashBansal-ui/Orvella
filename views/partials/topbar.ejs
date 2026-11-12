@@ -1,0 +1,9 @@
+<header class="topbar">
+  <button class="icon-button mobile-menu" id="menuToggle" aria-label="Toggle navigation">☰</button>
+  <label class="global-search"><span class="search-symbol">⌕</span><input id="globalSearch" type="search" placeholder="Search employees, teams, requests..."><kbd>⌘ K</kbd></label>
+  <div class="topbar-right">
+    <span class="top-date"><span class="calendar-mini">▦</span> WED, 04 NOV 2026</span>
+    <button class="icon-button notification-button" aria-label="Notifications">♧<i></i></button>
+    <div class="avatar avatar-purple"><%= role === 'employee' ? 'AM' : role === 'manager' ? 'SK' : role === 'hr' ? 'PS' : 'AD' %></div>
+  </div>
+</header>

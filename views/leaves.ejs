@@ -1,0 +1,23 @@
+<%- include('partials/head', { page }) %>
+<div class="app-shell">
+  <%- include('partials/sidebar', { page: { ...page, nav: [['Overview','/manager','grid'],['My team','#','users'],['Leave approvals','/manager/leaves','calendar'],['Attendance','#','clock'],['Team reports','#','chart']], active: 'Leave approvals' }, role, iconSvg }) %>
+  <main class="main-column"><%- include('partials/topbar', { role }) %>
+    <section class="page-content">
+      <div class="page-heading"><div><div class="eyebrow"><span class="eyebrow-dot"></span> MANAGER WORKSPACE</div><h1>Leave approvals</h1><p>Review requests from your team and make a clear decision.</p></div><button class="button button-outline" id="teamCalendarBtn">▦ Team calendar</button></div>
+      <div class="metric-grid metric-grid-four">
+        <article class="metric-card"><div class="metric-top"><span class="metric-label">Pending review</span><span class="metric-icon metric-icon-amber"><%- iconSvg('hourglass') %></span></div><div class="metric-value" id="pendingCount"><%= leaveRequests.filter(r => r.status === 'Pending').length %></div><div class="metric-note note-warning">Need your decision</div></article>
+        <article class="metric-card"><div class="metric-top"><span class="metric-label">Approved this month</span><span class="metric-icon metric-icon-green"><%- iconSvg('calendar') %></span></div><div class="metric-value">12</div><div class="metric-note note-positive">Across your team</div></article>
+        <article class="metric-card"><div class="metric-top"><span class="metric-label">Team members on leave</span><span class="metric-icon metric-icon-blue"><%- iconSvg('coffee') %></span></div><div class="metric-value">02</div><div class="metric-note note-neutral">Today</div></article>
+        <article class="metric-card"><div class="metric-top"><span class="metric-label">Available team members</span><span class="metric-icon metric-icon-purple"><%- iconSvg('users') %></span></div><div class="metric-value">06</div><div class="metric-note note-neutral">Out of 08 people</div></article>
+      </div>
+      <div class="approval-layout">
+        <section class="panel request-queue"><div class="panel-heading"><div><h2>Pending requests</h2><p>Select a request to review its details</p></div><span class="queue-count"><%= leaveRequests.filter(r => r.status === 'Pending').length %> pending</span></div><div class="request-list" id="requestList">
+          <% leaveRequests.forEach((request, index) => { %><button class="request-card <%= index === 0 ? 'selected' : '' %>" data-request-id="<%= request.id %>" type="button"><span class="avatar avatar-soft"><%= request.initials %></span><span class="request-card-copy"><strong><%= request.name %></strong><small><%= request.type %> · <%= request.days %> <%= request.days === 1 ? 'day' : 'days' %></small><small><%= request.dates %></small></span><span class="status status-<%= request.status === 'Pending' ? 'warning' : 'success' %>"><i></i><%= request.status %></span></button><% }) %>
+        </div><div class="queue-note"><span class="note-icon">i</span><span><strong>Approval reminder</strong><small>Check overlapping team leave and available coverage before approving.</small></span></div></section>
+        <section class="panel request-detail" id="requestDetail"><div class="detail-empty"><span class="empty-icon">▤</span><h2>Select a request</h2><p>Choose an item from the queue to view the full request.</p></div></section>
+      </div>
+    </section>
+  </main>
+</div>
+<script>window.orvella_LEAVES = <%- JSON.stringify(leaveRequests) %>;</script>
+<%- include('partials/scripts', { notice }) %>
